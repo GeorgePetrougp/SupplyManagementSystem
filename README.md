@@ -6,5 +6,5 @@
 -	Dependency Injection
 - Sql Server
 
-- Clean Architecture with Use Cases bussiness logic encaptulation
+- Clean Architecture with Use Cases bussiness logic encapsulation
 - Plug in based Architecture and plug-in components
