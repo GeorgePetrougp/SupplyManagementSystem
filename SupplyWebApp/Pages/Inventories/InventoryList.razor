@@ -1,0 +1,69 @@
+﻿@page "/inventories"
+
+@inject NavigationManager NavigationManager
+@inject IViewInventoriesByNameUserCase ViewInventoriesByNameUseCase
+
+
+
+<h3>Inventory List</h3>
+<br />
+<ViewInventoriesComponent OnSearchInventories="OnSearchInventories" ></ViewInventoriesComponent>
+<br />
+
+@*test the data saved in selection of inventory. Put the bellow in the component to be rendered*@
+@*DisplaySearchResult="true" OnSelectInventory="OnSelectInventory"*@
+
+@if(listInventories != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var i in this.listInventories)
+            {
+                <InventoryItemComponent Inventory = "i"></InventoryItemComponent>
+            }
+        </tbody>
+
+    </table>
+}
+<br />
+<button type="button" class="btn btn-primary" @onclick="AddInventory">Add</button>
+@*<p>
+    @inv?.InventoryName
+</p>*@
+
+@code {
+    private List<Inventory>? listInventories;
+    //private Inventory inv;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var invs = await ViewInventoriesByNameUseCase.ExecuteAsync();
+        this.listInventories = invs.ToList();
+    }
+
+
+    private void OnSearchInventories(List<Inventory> inventories)
+    {
+        listInventories = inventories;
+    }
+
+    private void AddInventory()
+    {
+        NavigationManager.NavigateTo("addinventory");
+    }
+
+    //private void OnSelectInventory(Inventory inventory)
+    //{
+    //    inv = inventory;
+    //}
+
+}

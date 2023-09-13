@@ -1,0 +1,33 @@
+﻿@page "/counter"
+
+@inject IViewInventoriesByNameUserCase ViewInventoriesByNameUserCase;
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<br />
+<ViewInventoriesComponent OnSearchInventories="OnSearchInventories"></ViewInventoriesComponent>
+
+@code {
+    private int currentCount = 0;
+
+    //test use case
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    var inventories = await ViewInventoriesByNameUserCase.ExecuteAsync("ngi");
+    //}
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private void OnSearchInventories(List<Inventory> inventories)
+    {
+        
+    }
+}
