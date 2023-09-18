@@ -40,6 +40,7 @@ namespace SupplyWebApp
             //Dependency Injection Repositories
             builder.Services.AddTransient<IInventoryRepository, InventoryRepository>();
             builder.Services.AddTransient<IProductRepository, ProductRepository>();
+            builder.Services.AddTransient<IInventoryTrasactionRepository, InventoryTrasactionRepository>();
 
             //Dependency Injection Cases
             builder.Services.AddTransient<IViewInventoriesByNameUserCase, ViewInventoriesByNameUserCase>();
@@ -51,6 +52,7 @@ namespace SupplyWebApp
             builder.Services.AddTransient<IViewProductByIdUseCase, ViewProductByIdUseCase>();
             builder.Services.AddTransient<IEditProductUseCase, EditProductUseCase>();
             builder.Services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
+            builder.Services.AddTransient<IPurchaseInventoryUseCase, PurchaseInventoryUseCase>();
 
 
             var app = builder.Build();
