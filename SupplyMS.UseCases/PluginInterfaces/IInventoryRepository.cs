@@ -12,6 +12,6 @@ namespace SupplyMS.UseCases.PluginInterfaces
         Task<IEnumerable<Inventory>> GetInventoriesByName(string name);
         Task<Inventory?> GetInventoryByIdAsync(int inventoryId);
         Task AddInventoryAsync(Inventory inventory);
-        Task UpdateInventory(Inventory inventory);
+        Task UpdateInventoryAsync(Inventory inventory);
     }
 }

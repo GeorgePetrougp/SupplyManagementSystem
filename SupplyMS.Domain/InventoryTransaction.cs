@@ -22,8 +22,10 @@ namespace SupplyMS.Domain
 
         [Required]
         public int QuantityAfter { get; set; }
-        public string PoNumber { get; set; }
-        public string ProductionNumber { get; set; }
+        public string? PoNumber { get; set; }
+        public string? ProductionNumber { get; set; }
+
+        public double? Cost { get; set; }
 
         [Required]
         public DateTime TransactionDate { get; set; }

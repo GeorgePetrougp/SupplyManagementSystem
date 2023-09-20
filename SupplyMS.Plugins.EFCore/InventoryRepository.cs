@@ -30,7 +30,7 @@ namespace SupplyMS.Plugins.EFCore
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateInventory(Inventory inventory)
+        public async Task UpdateInventoryAsync(Inventory inventory)
         {
             //prevent different inventories from having the same name 
             if(_context.Inventories.Any(i => i.InventoryId != inventory.InventoryId && i.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))

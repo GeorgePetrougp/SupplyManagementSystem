@@ -12,14 +12,19 @@ namespace SupplyMS.UseCases
     public class PurchaseInventoryUseCase : IPurchaseInventoryUseCase
     {
         private readonly IInventoryTrasactionRepository _inventoryTransactionRepository;
+        private readonly IInventoryRepository _inventoryRepository;
 
-        public PurchaseInventoryUseCase(IInventoryTrasactionRepository inventoryTransactionRepository)
+        public PurchaseInventoryUseCase(IInventoryTrasactionRepository inventoryTransactionRepository, IInventoryRepository inventoryRepository)
         {
             _inventoryTransactionRepository = inventoryTransactionRepository;
+            _inventoryRepository = inventoryRepository; 
         }
-        public async Task ExecuteAsync(string poNumber, Inventory inventory, int quantity, double price, string doneBy)
+        public async Task ExecuteAsync(string poNumber, Inventory inventory, int quantity, string doneBy)
         {
-            await _inventoryTransactionRepository.PurchaseAsync(poNumber, inventory, quantity, price, doneBy);
+            await _inventoryTransactionRepository.PurchaseAsync(poNumber, inventory, quantity,inventory.Price, doneBy);
+
+            inventory.Quantity += quantity;
+            await _inventoryRepository.UpdateInventoryAsync(inventory);
         }
     }
 }

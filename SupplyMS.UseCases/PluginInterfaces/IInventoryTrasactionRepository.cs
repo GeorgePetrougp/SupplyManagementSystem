@@ -9,6 +9,6 @@ namespace SupplyMS.UseCases.PluginInterfaces
 {
     public interface IInventoryTrasactionRepository
     {
-        Task PurchaseAsync(string poNumber, Inventory inventory, int quantity, double price, string doneBy);
+        Task PurchaseAsync(string poNumber, Inventory inventory, int quantity,double price,  string doneBy);
     }
 }

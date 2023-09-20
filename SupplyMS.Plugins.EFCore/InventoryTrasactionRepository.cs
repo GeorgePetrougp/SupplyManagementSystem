@@ -1,4 +1,5 @@
 ﻿using SupplyMS.Domain;
+using SupplyMS.Domain.Validations;
 using SupplyMS.UseCases.PluginInterfaces;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace SupplyMS.Plugins.EFCore
             _context = context;
         }
 
-        public async Task PurchaseAsync(string poNumber, Inventory inventory, int quantity, double price, string doneBy)
+        public async Task PurchaseAsync(string poNumber, Inventory inventory, int quantity,double price, string doneBy)
         {
              _context.InventoryTransactions.Add(new InventoryTransaction
             {
@@ -27,7 +28,8 @@ namespace SupplyMS.Plugins.EFCore
                 InventoryType = InventoryTransactionType.PurchaseInventory,
                 QuantityAfter = inventory.Quantity + quantity,
                 TransactionDate = DateTime.Now,
-                DoneBy = doneBy
+                DoneBy = doneBy,
+                Cost = price*quantity
             });
 
             await _context.SaveChangesAsync();

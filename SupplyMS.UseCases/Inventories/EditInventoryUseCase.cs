@@ -19,7 +19,7 @@ namespace SupplyMS.UseCases.Inventories
         }
         public async Task ExecuteAsync(Inventory inventory)
         {
-            await _inventoryRepository.UpdateInventory(inventory);
+            await _inventoryRepository.UpdateInventoryAsync(inventory);
         }
     }
 }

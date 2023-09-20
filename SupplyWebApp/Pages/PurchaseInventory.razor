@@ -1,5 +1,6 @@
 ﻿@page "/purchase"
 
+@inject IPurchaseInventoryUseCase PurchaseInventoryUseCase
 
 @using SupplyWebApp.ViewModels;
 <h3>Purchase Inventory</h3>
@@ -54,8 +55,13 @@
         purchaseViewModel.InventoryName = inventory.InventoryName;
     }
 
-    private void OnValidSubmit()
+    private async Task OnValidSubmit()
     {
-        
+        await PurchaseInventoryUseCase.ExecuteAsync(
+            this.purchaseViewModel.PurchaseOrder,
+            this.selectedInventory,
+            this.purchaseViewModel.QuantityToPurchase,
+            "Gio"//replace this in implementation of login
+        );
     }
 }
