@@ -1,7 +1,10 @@
 ﻿@page "/produce"
 @using SupplyWebApp.ViewModels;
 @inject IProduceProductUseCase ProduceProductUseCase
+@inject IValidateInventoriesForProducingUseCase ValidateInventoriesForProducingUseCase
 
+
+<ErrorMessageComponent ErrorMessage="@errorMessage"></ErrorMessageComponent>
 <h3>Produce Product</h3>
 <br />
 
@@ -46,9 +49,22 @@
 @code {
     private ProduceViewModel produceViewModel = new ProduceViewModel();
     private Product selectedProduct;
+    private string errorMessage;
 
     private async Task OnValidSubmit()
     {
+        if (!await ValidateInventoriesForProducingUseCase.ExecuteAsync(this.selectedProduct, this.produceViewModel.QuantityToProduce))
+        {
+            //show an error message
+            errorMessage = $"The inventories are not enough for producing {this.selectedProduct.ProductName} X {this.produceViewModel.QuantityToProduce} times.";
+            return;
+        }
+        else
+        {
+            errorMessage = string.Empty;
+        }
+
+
         await ProduceProductUseCase.ExecuteAsync(
             this.produceViewModel.ProductionNumber,
             this.selectedProduct,
