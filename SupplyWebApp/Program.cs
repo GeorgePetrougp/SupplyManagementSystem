@@ -41,6 +41,7 @@ namespace SupplyWebApp
             builder.Services.AddTransient<IInventoryRepository, InventoryRepository>();
             builder.Services.AddTransient<IProductRepository, ProductRepository>();
             builder.Services.AddTransient<IInventoryTrasactionRepository, InventoryTrasactionRepository>();
+            builder.Services.AddTransient<IProductTransactionRepository, ProductTransactionRepository>();
 
             //Dependency Injection Cases
             builder.Services.AddTransient<IViewInventoriesByNameUserCase, ViewInventoriesByNameUserCase>();
@@ -53,6 +54,9 @@ namespace SupplyWebApp
             builder.Services.AddTransient<IEditProductUseCase, EditProductUseCase>();
             builder.Services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
             builder.Services.AddTransient<IPurchaseInventoryUseCase, PurchaseInventoryUseCase>();
+            builder.Services.AddTransient<IValidateInventoriesForProducingUseCase, ValidateInventoriesForProducingUseCase>();
+            builder.Services.AddTransient<IProduceProductUseCase, ProduceProductUseCase>();
+
 
 
             var app = builder.Build();
