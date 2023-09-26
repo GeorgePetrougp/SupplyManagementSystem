@@ -56,6 +56,7 @@ namespace SupplyWebApp
             builder.Services.AddTransient<IPurchaseInventoryUseCase, PurchaseInventoryUseCase>();
             builder.Services.AddTransient<IValidateInventoriesForProducingUseCase, ValidateInventoriesForProducingUseCase>();
             builder.Services.AddTransient<IProduceProductUseCase, ProduceProductUseCase>();
+            builder.Services.AddTransient<ISellProductUseCase, SellProductUseCase>();
 
 
 

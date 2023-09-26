@@ -5,7 +5,7 @@
 
 
 <div class="input-group mb-3">
-    <input typeof="text" class="form-control form-control-lg" placeholder="Type product name to search" @bind-value="productNameToSearch">
+    <input typeof="text" class="form-control form-control-lg" placeholder="Type product name to search" @bind-value="productNameToSearch" @bind-value:event="oninput">
     <button type="button" class="input-group-text btn-success" @onclick="( async () => {await ViewProducts();})">View</button>
 </div>
 
@@ -25,7 +25,19 @@
 }
 
 @code {
-    private string? productNameToSearch;
+    private string? _productNameToSearch;
+    public string productNameToSearch { 
+        get => _productNameToSearch;
+        set
+        {
+            _productNameToSearch = value;
+            if (!string.IsNullOrWhiteSpace(_productNameToSearch) && _productNameToSearch.Length > 2)
+            {
+                ViewProducts();
+            }
+        } 
+
+    }
 
     private List<Product>? _products;
     private Product? selectedProduct;

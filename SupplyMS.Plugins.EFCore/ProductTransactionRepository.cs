@@ -47,5 +47,21 @@ namespace SupplyMS.Plugins.EFCore
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task SellProductAsync(string salesOrderNumber, Product product, int quantity, double price, string doneBy)
+        {
+            _context.ProductTransactions.Add(new ProductTransaction
+            {
+                SalesOrderNumber = salesOrderNumber,
+                ProductId = product.ProductId,
+                QuantityBefore = product.Quantity,
+                QuantityAfter = product.Quantity - quantity,
+                TransactionDate = DateTime.Now,
+                DoneBy = doneBy,
+                UnitPrice = price
+            });
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
