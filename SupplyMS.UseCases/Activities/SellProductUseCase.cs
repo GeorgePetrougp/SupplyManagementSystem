@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupplyMS.UseCases
+namespace SupplyMS.UseCases.Activities
 {
     public class SellProductUseCase : ISellProductUseCase
     {

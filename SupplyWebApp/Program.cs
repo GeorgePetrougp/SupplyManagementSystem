@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using SupplyMS.Plugins.EFCore;
 using SupplyMS.UseCases;
+using SupplyMS.UseCases.Activities;
 using SupplyMS.UseCases.Interfaces;
 using SupplyMS.UseCases.Inventories;
 using SupplyMS.UseCases.PluginInterfaces;
 using SupplyMS.UseCases.Products;
+using SupplyMS.UseCases.Reports;
+using SupplyMS.UseCases.Validations;
 using SupplyWebApp.Areas.Identity;
 using SupplyWebApp.Data;
 
@@ -57,6 +60,9 @@ namespace SupplyWebApp
             builder.Services.AddTransient<IValidateInventoriesForProducingUseCase, ValidateInventoriesForProducingUseCase>();
             builder.Services.AddTransient<IProduceProductUseCase, ProduceProductUseCase>();
             builder.Services.AddTransient<ISellProductUseCase, SellProductUseCase>();
+            builder.Services.AddTransient<ISearchInventoryTransactionsUseCase, SearchInventoryTransactionsUseCase>();
+            builder.Services.AddTransient<ISearchProductTransactionsUseCase, SearchProductTransactionsUseCase>();
+
 
 
 

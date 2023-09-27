@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupplyMS.UseCases
+namespace SupplyMS.UseCases.Validations
 {
     public class ValidateInventoriesForProducingUseCase : IValidateInventoriesForProducingUseCase
     {

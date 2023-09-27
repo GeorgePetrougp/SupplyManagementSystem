@@ -19,6 +19,22 @@ namespace SupplyMS.Plugins.EFCore
             _context = context;
             _productRepository = productRepository;
         }
+
+        public async Task<IEnumerable<ProductTransaction>> GetProductTransactionAsync(string productName, DateTime? dateFrom, DateTime? dateTo, ProductTransactionType? transactionType)
+        {
+            if (dateTo.HasValue) dateTo = dateTo.Value.AddDays(1);
+            var query = from pt in _context.ProductTransactions
+                        join prod in _context.Products on pt.ProductId equals prod.ProductId
+                        where 
+                            (string.IsNullOrWhiteSpace(productName) || prod.ProductName.Contains(productName,StringComparison.OrdinalIgnoreCase)) && 
+                            (!dateFrom.HasValue || pt.TransactionDate >= dateFrom.Value.Date) &&
+                            (!dateTo.HasValue || pt.TransactionDate <= dateTo.Value.Date) &&
+                            (!transactionType.HasValue || pt.ActivityType == transactionType)
+                        select pt;
+
+            return await query.Include(x => x.Product).ToListAsync();   
+        }
+
         public async Task ProduceAsync(string productionNumber, Product product, int quantity, double price, string doneBy)
         {
 
@@ -30,9 +46,26 @@ namespace SupplyMS.Plugins.EFCore
             {
                 foreach(var item in prod.ProductInventories)
                 {
+                    int quantityBefore = item.Inventory.Quantity;
                     item.Inventory.Quantity -= quantity * item.InventoryQuantity;
+
+                    _context.InventoryTransactions.Add(new InventoryTransaction
+                    {
+                        ProductionNumber = productionNumber,
+                        InventoryId = item.Inventory.InventoryId,
+                        QuantityBefore = quantityBefore,
+                        ActivityType = InventoryTransactionType.ProduceProduct,
+                        QuantityAfter = item.Inventory.Quantity,
+                        TransactionDate = DateTime.Now,
+                        DoneBy = doneBy,
+                        UnitPrice = price
+                    });
                 }
             }
+
+            
+
+
             _context.ProductTransactions.Add(new ProductTransaction
             {
                 PoNumber = productionNumber,
@@ -58,7 +91,8 @@ namespace SupplyMS.Plugins.EFCore
                 QuantityAfter = product.Quantity - quantity,
                 TransactionDate = DateTime.Now,
                 DoneBy = doneBy,
-                UnitPrice = price
+                UnitPrice = price,
+                ActivityType = ProductTransactionType.SellProduct
             });
 
             await _context.SaveChangesAsync();

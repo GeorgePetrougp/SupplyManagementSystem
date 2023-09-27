@@ -1,4 +1,5 @@
-﻿using SupplyMS.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using SupplyMS.Domain;
 using SupplyMS.Domain.Validations;
 using SupplyMS.UseCases.PluginInterfaces;
 using System;
@@ -16,6 +17,21 @@ namespace SupplyMS.Plugins.EFCore
         public InventoryTrasactionRepository(DataContext context)
         {
             _context = context;
+        }
+
+        public async Task<IEnumerable<InventoryTransaction>> GetInventoryTransactionsAsync(string inventoryName, DateTime? dateFrom, DateTime? dateTo, InventoryTransactionType? transactionType)
+        {
+            if(dateTo.HasValue) dateTo = dateTo.Value.AddDays(1);
+            
+            var query = from it in _context.InventoryTransactions
+                        join inv in _context.Inventories on it.InventoryId equals inv.InventoryId
+                        where (string.IsNullOrWhiteSpace(inventoryName) || inv.InventoryName.Contains(inventoryName, StringComparison.OrdinalIgnoreCase)) &&
+                        (!dateFrom.HasValue || it.TransactionDate >= dateFrom.Value.Date) &&
+                        (!dateTo.HasValue || it.TransactionDate <= dateTo.Value.Date) &&
+                        (!transactionType.HasValue || it.ActivityType == transactionType)
+                        select it;
+
+            return await query.Include(x=>x.Inventory).ToListAsync();
         }
 
         public async Task PurchaseAsync(string poNumber, Inventory inventory, int quantity,double price, string doneBy)

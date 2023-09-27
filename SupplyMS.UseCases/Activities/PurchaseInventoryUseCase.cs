@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupplyMS.UseCases
+namespace SupplyMS.UseCases.Activities
 {
     public class PurchaseInventoryUseCase : IPurchaseInventoryUseCase
     {
@@ -17,11 +17,11 @@ namespace SupplyMS.UseCases
         public PurchaseInventoryUseCase(IInventoryTrasactionRepository inventoryTransactionRepository, IInventoryRepository inventoryRepository)
         {
             _inventoryTransactionRepository = inventoryTransactionRepository;
-            _inventoryRepository = inventoryRepository; 
+            _inventoryRepository = inventoryRepository;
         }
         public async Task ExecuteAsync(string poNumber, Inventory inventory, int quantity, string doneBy)
         {
-            await _inventoryTransactionRepository.PurchaseAsync(poNumber, inventory, quantity,inventory.Price, doneBy);
+            await _inventoryTransactionRepository.PurchaseAsync(poNumber, inventory, quantity, inventory.Price, doneBy);
 
             inventory.Quantity += quantity;
             await _inventoryRepository.UpdateInventoryAsync(inventory);
