@@ -1,4 +1,7 @@
 ﻿@page "/produce"
+
+@attribute [Authorize]
+
 @using SupplyWebApp.ViewModels;
 @inject IProduceProductUseCase ProduceProductUseCase
 @inject IValidateInventoriesForProducingUseCase ValidateInventoriesForProducingUseCase

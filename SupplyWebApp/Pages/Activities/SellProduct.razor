@@ -1,6 +1,8 @@
 ﻿@using SupplyWebApp.ViewModels;
 @page "/sell"
 
+@attribute [Authorize]
+
 @inject ISellProductUseCase SellProductUseCase
 
 <ErrorMessageComponent ErrorMessage="@errorMessage"></ErrorMessageComponent>
