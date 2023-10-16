@@ -14,14 +14,16 @@ namespace SupplyMS.Plugins.EFCore
         }
         public async Task<IEnumerable<Inventory>> GetInventoriesByName(string name)
         {
-            return await _context.Inventories.Where(i => i.InventoryName.Contains(name, StringComparison.OrdinalIgnoreCase) 
-                                                        || string.IsNullOrWhiteSpace(name)).ToListAsync();
+            return await _context.Inventories.Where(i => i.InventoryName.ToLower().IndexOf(name.ToLower()) >= 0).ToListAsync();
+
+            //return await _context.Inventories.Where(i => i.InventoryName.Contains(name, StringComparison.OrdinalIgnoreCase) 
+            //                                            || string.IsNullOrWhiteSpace(name)).ToListAsync();
         }
 
         public async Task AddInventoryAsync(Inventory inventory)
         {
             //prevent different inventories from having the same name 
-            if (_context.Inventories.Any(i => i.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+            if (_context.Inventories.Any(i => i.InventoryName.ToLower() == inventory.InventoryName.ToLower()))
             {
                 return;
             }
@@ -33,10 +35,18 @@ namespace SupplyMS.Plugins.EFCore
         public async Task UpdateInventoryAsync(Inventory inventory)
         {
             //prevent different inventories from having the same name 
-            if(_context.Inventories.Any(i => i.InventoryId != inventory.InventoryId && i.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+            //if(_context.Inventories.Any(i => i.InventoryId != inventory.InventoryId && i.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+            //{
+            //    return;
+            //}
+
+            if (_context.Inventories.Any(i => i.InventoryId != inventory.InventoryId && i.InventoryName.ToLower() == inventory.InventoryName.ToLower()))
             {
                 return;
             }
+
+
+
             var currentInventory = await _context.Inventories.FindAsync(inventory.InventoryId);
             if (currentInventory != null)
             {

@@ -28,6 +28,7 @@ namespace SupplyWebApp
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -38,7 +39,7 @@ namespace SupplyWebApp
 
             builder.Services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseInMemoryDatabase("SupplyDb");
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("SupplyManagement"));
             });
             //Dependency Injection Repositories
             builder.Services.AddTransient<IInventoryRepository, InventoryRepository>();
@@ -70,8 +71,8 @@ namespace SupplyWebApp
 
             var scope = app.Services.CreateScope();
             var supplyContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-            supplyContext.Database.EnsureDeleted();
-            supplyContext.Database.EnsureCreated();
+            //supplyContext.Database.EnsureDeleted();
+            //supplyContext.Database.EnsureCreated();
 
 
             // Configure the HTTP request pipeline.

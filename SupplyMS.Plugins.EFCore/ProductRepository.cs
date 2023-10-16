@@ -20,7 +20,8 @@ namespace SupplyMS.Plugins.EFCore
 
         public async Task AddProductAsync(Product product)
         {
-            if (_context.Products.Any(p => p.ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase))) return;
+            //if (_context.Products.Any(p => p.ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase))) return;
+            if (_context.Products.Any(p => p.ProductName.ToLower() == product.ProductName.ToLower())) return;
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
@@ -37,7 +38,7 @@ namespace SupplyMS.Plugins.EFCore
 
         public async Task<List<Product>> GetProductsByNameAsync(string name)
         {
-            return await _context.Products.Where(p => (p.ProductName.Contains(name, StringComparison.OrdinalIgnoreCase)
+            return await _context.Products.Where(p => (p.ProductName.ToLower().IndexOf(name.ToLower()) >= 0
                                                         || string.IsNullOrWhiteSpace(name)) && p.IsActive == true).ToListAsync();
         }
 
@@ -55,7 +56,7 @@ namespace SupplyMS.Plugins.EFCore
         public async Task UpdateProductAsync(Product product)
         {
            //prevent samename
-          if( _context.Products.Any(p => p.ProductName.Equals(product.ProductName,StringComparison.OrdinalIgnoreCase))) return;
+          if( _context.Products.Any(p => p.ProductName.ToLower() == product.ProductName.ToLower())) return;
 
             var pro = await _context.Products.FindAsync(product.ProductId);
             if(pro != null)
